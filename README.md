@@ -17,12 +17,13 @@ e põe por cima da cena.
 
 ## Instalar
 
-1. Baixe esta pasta (ou clone o repositório).
-2. No ATO20: Configurações → Plugins → Importar, e escolha a pasta.
+1. Clone o repositório (ou baixe o zip dele):
 
    ```
    git clone https://github.com/valb-mig/ato20.obs.plugin
    ```
+
+2. No ATO20: Configurações → Plugins → Importar, e escolha a pasta.
 3. Habilite o plugin.
 
 Pede o ATO20 com a API de plugins 3 ou mais nova.
