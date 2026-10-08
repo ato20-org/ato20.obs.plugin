@@ -8,6 +8,27 @@
 // que ela sabe da mesa é o que o plugin publicou.
 
 const busca = new URLSearchParams(location.search);
+// O idioma vem no link que o painel Transmissão copia: o navegador do OBS
+// não sabe em que idioma está o Mestre.
+const TEXTOS = {
+  "pt-BR": {
+    linkIncompleto: "Link incompleto. Copie o link do painel Transmissão, no Mestre.",
+    codigoErrado: "O código da mesa não confere.",
+    semCampanha: "O mestre ainda não abriu uma campanha.",
+    inesperado: "A mesa respondeu de um jeito inesperado.",
+    semRede: "Não foi possível alcançar a mesa. Confira a rede e o endereço.",
+    desligado: "O plugin OBS está desligado no Mestre, ou a mesa fechou.",
+  },
+  en: {
+    linkIncompleto: "Incomplete link. Copy the link from the Streaming panel, on the GM screen.",
+    codigoErrado: "The table code does not match.",
+    semCampanha: "The GM has not opened a campaign yet.",
+    inesperado: "The table answered in an unexpected way.",
+    semRede: "Could not reach the table. Check the network and the address.",
+    desligado: "The OBS plugin is off on the GM screen, or the table closed.",
+  },
+};
+const texto = TEXTOS[busca.get("idioma") === "en" ? "en" : "pt-BR"];
 const codigo = (busca.get("code") ?? "").trim().toUpperCase();
 const quem = busca.get("quem") || null;
 const escala = busca.get("escala") ?? "1";
@@ -21,15 +42,15 @@ function avisar(texto) {
 }
 
 async function conferir() {
-  if (!codigo) return "Link incompleto. Copie o link do painel Transmissão, no Mestre.";
+  if (!codigo) return texto.linkIncompleto;
   try {
     const resposta = await fetch(`/sala?codigo=${encodeURIComponent(codigo)}`);
-    if (resposta.status === 403) return "O código da mesa não confere.";
-    if (resposta.status === 503) return "O mestre ainda não abriu uma campanha.";
-    if (!resposta.ok) return "A mesa respondeu de um jeito inesperado.";
+    if (resposta.status === 403) return texto.codigoErrado;
+    if (resposta.status === 503) return texto.semCampanha;
+    if (!resposta.ok) return texto.inesperado;
     return null;
   } catch {
-    return "Não foi possível alcançar a mesa. Confira a rede e o endereço.";
+    return texto.semRede;
   }
 }
 
@@ -107,7 +128,7 @@ if (erro) {
     // O EventSource reconecta sozinho. Se o plugin foi desligado, o canal
     // responde 404 e ele desiste: o recado diz o que conferir.
     if (fonte.readyState === EventSource.CLOSED) {
-      avisar("O plugin OBS está desligado no Mestre, ou a mesa fechou.");
+      avisar(texto.desligado);
     }
   };
 }
