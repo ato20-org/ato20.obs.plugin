@@ -3,7 +3,7 @@
   "nome": "OBS",
   "versao": "0.2.0",
   "autor": "valb-mig",
-  "repositorio": "https://github.com/valb-mig/ato20.obs.plugin",
+  "repositorio": "https://github.com/ato20-org/ato20.obs.plugin",
   "descricao": "Leva a mesa para a live: os dados caindo e os retratos dos personagens, em fontes de navegador com fundo transparente.",
   "apiVersao": 3,
   "principal": "main.js",
