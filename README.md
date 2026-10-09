@@ -17,6 +17,12 @@ e põe por cima da cena.
 
 ## Instalar
 
+Pelo catálogo: no ATO20, Configurações → Plugins → Catálogo, e **Instalar** no
+card deste plugin. O ATO20 pede confirmação, porque o plugin roda código no
+Mestre. Quando sair versão nova, o mesmo botão vira **Atualizar**.
+
+À mão, num ATO20 sem o botão de instalar no catálogo:
+
 1. Clone o repositório (ou baixe o zip dele):
 
    ```
@@ -26,7 +32,8 @@ e põe por cima da cena.
 2. No ATO20: Configurações → Plugins → Importar, e escolha a pasta.
 3. Habilite o plugin.
 
-Pede o ATO20 com a API de plugins 3 ou mais nova.
+Pede o ATO20 1.3.0 ou mais novo (API de plugins 8). O painel e os avisos das
+páginas saem no idioma do ATO20, português ou inglês.
 
 ## Usar
 
@@ -48,10 +55,10 @@ O mestre começa desligado: os dados dele só saem da máquina quando você liga
 Na seção **Retratos** do painel:
 
 - **Retratos no ar**: o grupo, exatamente onde a mesa mostra. Siga o que o mestre
-  põe na TV: entra NPC quando ele põe, sai quando ele tira. Use numa fonte 16:9.
+  põe na janela do espectador: entra NPC quando ele põe, sai quando ele tira. Use numa fonte 16:9.
 - **O card de cada personagem de jogador**: o retrato daquele personagem, com vida,
   condições e o dado do jogador caindo embaixo, encaixado na caixa da fonte.
-  Aparece mesmo com o retrato fora da TV.
+  Aparece mesmo com o retrato fora da janela do espectador.
 
 O retrato mostra o que a mesa vê: medidor e condição escondidos ficam de fora, e o
 nome só aparece com a peça "nome" ligada nos retratos da sessão. O dado embaixo

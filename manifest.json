@@ -1,38 +1,41 @@
 {
   "id": "obs",
   "nome": "OBS",
-  "versao": "0.2.0",
+  "versao": "0.3.0",
   "autor": "valb-mig",
   "repositorio": "https://github.com/ato20-org/ato20.obs.plugin",
-  "descricao": "Leva a mesa para a live: os dados caindo e os retratos dos personagens, em fontes de navegador com fundo transparente.",
-  "apiVersao": 3,
+  "descricao": {
+    "pt-BR": "Leva a mesa para a live: os dados caindo e os retratos dos personagens, em fontes de navegador com fundo transparente.",
+    "en": "Takes the table to your stream: the dice falling and the character portraits, as browser sources with a transparent background."
+  },
+  "apiVersao": 8,
   "principal": "main.js",
   "ativacao": "abertura",
   "contribui": {
     "paineis": [
       {
         "id": "transmissao",
-        "titulo": "Transmissão",
-        "subtitulo": "Os dados e os retratos na live"
+        "titulo": { "pt-BR": "Transmissão", "en": "Streaming" },
+        "subtitulo": { "pt-BR": "Os dados e os retratos na live", "en": "Dice and portraits on stream" }
       }
     ],
     "paginas": [
       {
         "id": "camera",
-        "titulo": "Câmera dos dados",
+        "titulo": { "pt-BR": "Câmera dos dados", "en": "Dice camera" },
         "arquivo": "camera.html"
       },
       {
         "id": "retratos",
-        "titulo": "Retratos",
+        "titulo": { "pt-BR": "Retratos", "en": "Portraits" },
         "arquivo": "retratos.html"
       }
     ],
     "configuracoes": [
       {
         "chave": "obs.ocultos",
-        "titulo": "Quem não aparece na live",
-        "descricao": "Editado pelo painel Transmissão.",
+        "titulo": { "pt-BR": "Quem não aparece na live", "en": "Who stays off the stream" },
+        "descricao": { "pt-BR": "Editado pelo painel Transmissão.", "en": "Edited from the Streaming panel." },
         "tipo": "lista",
         "padrao": [
           "mestre"
@@ -41,8 +44,8 @@
       },
       {
         "chave": "obs.prazo",
-        "titulo": "Segundos que o dado fica na live",
-        "descricao": "Depois de o dado parar.",
+        "titulo": { "pt-BR": "Segundos que o dado fica na live", "en": "Seconds a die stays on stream" },
+        "descricao": { "pt-BR": "Depois de o dado parar.", "en": "After the die stops." },
         "tipo": "numero",
         "padrao": 10,
         "minimo": 1,
@@ -50,8 +53,8 @@
       },
       {
         "chave": "obs.nome",
-        "titulo": "Escrever quem jogou",
-        "descricao": "O nome aparece embaixo de cada dado.",
+        "titulo": { "pt-BR": "Escrever quem jogou", "en": "Show who rolled" },
+        "descricao": { "pt-BR": "O nome aparece embaixo de cada dado.", "en": "The name shows under each die." },
         "tipo": "booleano",
         "padrao": false
       }
