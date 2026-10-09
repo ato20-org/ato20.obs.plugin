@@ -26,7 +26,7 @@ Mestre. Quando sair versão nova, o mesmo botão vira **Atualizar**.
 1. Clone o repositório (ou baixe o zip dele):
 
    ```
-   git clone https://github.com/valb-mig/ato20.obs.plugin
+   git clone https://github.com/ato20-org/ato20.obs.plugin
    ```
 
 2. No ATO20: Configurações → Plugins → Importar, e escolha a pasta.
