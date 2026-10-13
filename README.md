@@ -5,6 +5,8 @@ os retratos dos personagens com vida, condições e o dado de quem jogou embaixo
 Tudo em páginas de fundo transparente, que o OBS captura como fonte de navegador
 e põe por cima da cena.
 
+![Os dados da Ana e do Mestre caindo na câmera dos dados, por cima da cena da live](docs/camera.jpg)
+
 ## O que tem aqui
 
 - `main.js` roda no Mestre. Escuta a mesa, tira quem está desligado e publica o
@@ -17,6 +19,14 @@ e põe por cima da cena.
 
 ## Instalar
 
+No ATO20: Configurações → Plugins → **Catálogo**, e **Instalar** no OBS. O plugin
+executa código no Mestre, então o ATO20 pergunta antes. Quando sair versão nova,
+o mesmo botão vira **Atualizar**.
+
+Pede o ATO20 com a API de plugins 3 ou mais nova.
+
+Num ATO20 sem o catálogo:
+
 1. Clone o repositório (ou baixe o zip dele):
 
    ```
@@ -26,9 +36,9 @@ e põe por cima da cena.
 2. No ATO20: Configurações → Plugins → Importar, e escolha a pasta.
 3. Habilite o plugin.
 
-Pede o ATO20 com a API de plugins 3 ou mais nova.
-
 ## Usar
+
+![O painel Transmissão: o interruptor de cada pessoa e os links para o OBS](docs/painel.png)
 
 1. No Mestre, abra **Abas → Transmissão**.
 2. Escolha de onde o OBS abre o link: desta máquina ou de outro computador na
