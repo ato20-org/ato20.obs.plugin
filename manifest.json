@@ -1,9 +1,10 @@
 {
   "id": "obs",
   "nome": "OBS",
-  "versao": "0.2.0",
+  "versao": "0.2.1",
   "autor": "valb-mig",
   "repositorio": "https://github.com/ato20-org/ato20.obs.plugin",
+  "icone": "icone.png",
   "descricao": "Leva a mesa para a live: os dados caindo e os retratos dos personagens, em fontes de navegador com fundo transparente.",
   "apiVersao": 3,
   "principal": "main.js",
