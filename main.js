@@ -11,6 +11,8 @@
 // Quem desenha na live são camera.html e retratos.html, que rodam no
 // navegador do OBS.
 
+import { textosPara } from "./textos.js";
+
 const MESTRE = "mestre";
 const CANAL = "dados";
 const CANAL_DOS_RETRATOS = "retratos";
@@ -18,6 +20,9 @@ const CANAL_DOS_RETRATOS = "retratos";
 const plugin = {
   ativar(api) {
     const h = api.react.createElement;
+    const t = textosPara(api.idioma);
+    // As páginas rodam no OBS e não sabem a língua do Mestre: vai no link.
+    const doIdioma = api.idioma === "en" ? { idioma: "en" } : {};
     const { useEffect, useState } = api.react;
     const { Button, Switch, ScrollArea, PainelVazio } = api.ui.componentes;
     const Copiar = api.ui.icones.copiar;
@@ -42,7 +47,7 @@ const plugin = {
           .map((dado) => ({
             id: dado.id,
             quem: quemJogou(dado),
-            nome: dado.origem === "jogador" ? dado.jogador : "Mestre",
+            nome: dado.origem === "jogador" ? dado.jogador : t.mestre,
             faces: dado.faces,
             face: dado.face,
             semente: dado.semente,
@@ -113,13 +118,13 @@ const plugin = {
 
     function copiar(link) {
       if (!link) {
-        api.ui.erro("Abra uma campanha para ter o link.");
+        api.ui.erro(t.semCampanhaLink);
         return;
       }
       navigator.clipboard
         .writeText(link)
-        .then(() => api.ui.aviso("Link copiado"))
-        .catch(() => api.ui.erro(`Não foi possível copiar: ${link}`));
+        .then(() => api.ui.aviso(t.copiado))
+        .catch(() => api.ui.erro(t.naoCopiou(link)));
     }
 
     function BotaoCopiar({ link, rotulo }) {
@@ -161,13 +166,13 @@ const plugin = {
       // endereço errado não funciona.
       const pelaRede = rede ?? Boolean(enderecos?.rede);
       const pessoas = [
-        { quem: MESTRE, nome: "Mestre", nota: "Seus dados só saem desta máquina com isto ligado." },
+        { quem: MESTRE, nome: t.mestre, nota: t.notaDoMestre },
         ...jogadores.map((jogador) => ({ quem: jogador.id, nome: jogador.nome, nota: null })),
       ];
       const chaveDasPessoas = pessoas.map((pessoa) => pessoa.quem).join("|");
       const personagensDeJogador = [
         ...new Set(jogadores.flatMap((jogador) => jogador.personagens ?? [])),
-      ].map((id) => ({ id, nome: api.personagens.obter(id)?.nome ?? "Personagem" }));
+      ].map((id) => ({ id, nome: api.personagens.obter(id)?.nome ?? t.personagem }));
       const chaveDosPjs = personagensDeJogador.map((pj) => pj.id).join("|");
 
       // Montados antes do clique: copiar logo depois de um `await` perde a
@@ -176,13 +181,13 @@ const plugin = {
         let ativo = true;
         const dados = [null, ...chaveDasPessoas.split("|")].map((quem) => ({
           chave: quem ?? "",
-          pedido: api.mesa.linkDaPagina("camera", { rede: pelaRede, busca: quem ? { quem } : undefined }),
+          pedido: api.mesa.linkDaPagina("camera", { rede: pelaRede, busca: { ...(quem ? { quem } : {}), ...doIdioma } }),
         }));
         const retratos = [null, ...(chaveDosPjs ? chaveDosPjs.split("|") : [])].map((id) => ({
           chave: `retratos:${id ?? "grupo"}`,
           pedido: api.mesa.linkDaPagina("retratos", {
             rede: pelaRede,
-            busca: id ? { personagem: id } : { modo: "grupo" },
+            busca: { ...(id ? { personagem: id } : { modo: "grupo" }), ...doIdioma },
           }),
         }));
         const todos = [...dados, ...retratos];
@@ -196,7 +201,7 @@ const plugin = {
       }, [pelaRede, chaveDasPessoas, chaveDosPjs, enderecos?.codigo]);
 
       if (enderecos && !enderecos.codigo) {
-        return h(PainelVazio, { icone: api.ui.icones.mesa }, "Abra uma campanha para ter os links.");
+        return h(PainelVazio, { icone: api.ui.icones.mesa }, t.semCampanhaLinks);
       }
 
       return h(
@@ -214,7 +219,7 @@ const plugin = {
               h(
                 Button,
                 { size: "sm", variant: pelaRede ? "ghost" : "secondary", onClick: () => setRede(false) },
-                "Transmite daqui",
+                t.transmiteDaqui,
               ),
               h(
                 Button,
@@ -224,15 +229,13 @@ const plugin = {
                   disabled: !enderecos?.rede,
                   onClick: () => setRede(true),
                 },
-                "De outro computador",
+                t.deOutroComputador,
               ),
             ),
             h(
               "p",
               { className: "text-muted-foreground text-[11px] leading-snug" },
-              pelaRede
-                ? "Pelo Wi-Fi. Quem tem o código da mesa também consegue abrir estes links."
-                : "Só funciona no OBS desta máquina.",
+              pelaRede ? t.pelaRede : t.soDaqui,
             ),
           ),
           h(
@@ -244,14 +247,14 @@ const plugin = {
               h(
                 "div",
                 { className: "min-w-0 flex-1" },
-                h("h3", { className: "truncate text-sm font-medium" }, "Câmera dos dados"),
+                h("h3", { className: "truncate text-sm font-medium" }, t.camera),
                 h(
                   "p",
                   { className: "text-muted-foreground text-[11px] leading-snug" },
-                  "Todos que estão ligados, numa fonte só.",
+                  t.cameraNota,
                 ),
               ),
-              h(BotaoCopiar, { link: links[""], rotulo: "Copiar o link da câmera dos dados" }),
+              h(BotaoCopiar, { link: links[""], rotulo: t.copiarCamera }),
             ),
             h(
               "ul",
@@ -264,7 +267,7 @@ const plugin = {
                   h(Switch, {
                     checked: aparece,
                     onCheckedChange: (ligado) => mostrar(pessoa.quem, ligado),
-                    "aria-label": `${pessoa.nome} aparece na live`,
+                    "aria-label": t.aparece(pessoa.nome),
                   }),
                   h(
                     "span",
@@ -280,7 +283,7 @@ const plugin = {
                   ),
                   h(BotaoCopiar, {
                     link: links[pessoa.quem],
-                    rotulo: `Copiar o link só com os dados de ${pessoa.nome}`,
+                    rotulo: t.copiarDadosDe(pessoa.nome),
                   }),
                 );
               }),
@@ -295,20 +298,20 @@ const plugin = {
               h(
                 "div",
                 { className: "min-w-0 flex-1" },
-                h("h3", { className: "truncate text-sm font-medium" }, "Retratos"),
+                h("h3", { className: "truncate text-sm font-medium" }, t.retratos),
                 h(
                   "p",
                   { className: "text-muted-foreground text-[11px] leading-snug" },
-                  "O grupo segue o que está no ar na mesa. O card de cada personagem aparece mesmo fora da TV, com o dado embaixo.",
+                  t.retratosNota,
                 ),
               ),
-              h(BotaoCopiar, { link: links["retratos:grupo"], rotulo: "Copiar o link dos retratos no ar" }),
+              h(BotaoCopiar, { link: links["retratos:grupo"], rotulo: t.copiarRetratos }),
             ),
             personagensDeJogador.length === 0
               ? h(
                   "p",
                   { className: "text-muted-foreground text-[11px] leading-snug" },
-                  "Nenhum personagem vinculado a jogador ainda.",
+                  t.semPjs,
                 )
               : h(
                   "ul",
@@ -320,7 +323,7 @@ const plugin = {
                       h("span", { className: "min-w-0 flex-1 truncate text-sm" }, pj.nome),
                       h(BotaoCopiar, {
                         link: links[`retratos:${pj.id}`],
-                        rotulo: `Copiar o link do card de ${pj.nome}`,
+                        rotulo: t.copiarCard(pj.nome),
                       }),
                     ),
                   ),
@@ -329,7 +332,7 @@ const plugin = {
           h(
             "p",
             { className: "text-muted-foreground text-[11px] leading-snug" },
-            "No OBS: Fontes, +, Navegador, e cole o link. O fundo é transparente. O grupo fica certo numa fonte 16:9, como a TV. Na câmera dos dados, numa caixa pequena, acrescente &escala=2 ao link para o dado ficar maior.",
+            t.comoUsar,
           ),
         ),
       );
