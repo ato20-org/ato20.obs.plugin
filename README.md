@@ -15,6 +15,8 @@ e põe por cima da cena.
   o que cai e quando sai, e usam o kit de dados do ATO20 para desenhar.
 - `retratos.html` e `retratos.js` fazem o mesmo com os retratos, pelo kit de
   retratos do ATO20.
+- `textos.js` tem os textos em português e em inglês, para o painel e para as
+  páginas.
 - `manifest.json` declara o painel, as duas páginas e três ajustes.
 
 ## Instalar
@@ -23,7 +25,7 @@ No ATO20: Configurações → Plugins → **Catálogo**, e **Instalar** no OBS. 
 executa código no Mestre, então o ATO20 pergunta antes. Quando sair versão nova,
 o mesmo botão vira **Atualizar**.
 
-Pede o ATO20 com a API de plugins 3 ou mais nova.
+Pede o ATO20 com a API de plugins 7 ou mais nova.
 
 Num ATO20 sem o catálogo:
 
@@ -41,8 +43,8 @@ Num ATO20 sem o catálogo:
 ![O painel Transmissão: o interruptor de cada pessoa e os links para o OBS](docs/painel.png)
 
 1. No Mestre, abra **Abas → Transmissão**.
-2. Escolha de onde o OBS abre o link: desta máquina ou de outro computador na
-   mesma rede.
+2. Escolha de onde o OBS abre o link: desta máquina ou de outro computador,
+   pela rede do convite (o Wi-Fi ou a VPN).
 3. Copie o link:
    - **Câmera dos dados**: todos que estão ligados, numa fonte só.
    - **O link de uma pessoa**: só os dados dela. Serve para pôr o dado de cada
@@ -85,3 +87,10 @@ segue o mesmo interruptor da câmera dos dados.
 Com o link de outro computador, quem tem o código da mesa também consegue abrir a
 página. Por isso o mestre começa desligado, e o dado de quem está desligado nem
 sai do Mestre.
+
+## Idioma
+
+O painel e os ajustes seguem o idioma do ATO20, em português ou em inglês. As
+páginas no OBS não sabem em que língua está o Mestre, então o link copiado com o
+ATO20 em inglês leva `&idioma=en`, e os avisos da página (link incompleto, mesa
+fechada) saem em inglês. O "Mestre" embaixo do dado vira "GM".

@@ -7,7 +7,12 @@
 // A página vem numa origem opaca (sandbox): sem localStorage, sem cookie. O
 // que ela sabe da mesa é o que o plugin publicou.
 
+import { textosPara } from "./textos.js";
+
 const busca = new URLSearchParams(location.search);
+// O painel põe `idioma=en` no link quando o Mestre está em inglês.
+const t = textosPara(busca.get("idioma") === "en" ? "en" : "pt-BR");
+if (busca.get("idioma") === "en") document.documentElement.lang = "en";
 const codigo = (busca.get("code") ?? "").trim().toUpperCase();
 const quem = busca.get("quem") || null;
 const escala = busca.get("escala") ?? "1";
@@ -21,15 +26,15 @@ function avisar(texto) {
 }
 
 async function conferir() {
-  if (!codigo) return "Link incompleto. Copie o link do painel Transmissão, no Mestre.";
+  if (!codigo) return t.linkIncompleto;
   try {
     const resposta = await fetch(`/sala?codigo=${encodeURIComponent(codigo)}`);
-    if (resposta.status === 403) return "O código da mesa não confere.";
-    if (resposta.status === 503) return "O mestre ainda não abriu uma campanha.";
-    if (!resposta.ok) return "A mesa respondeu de um jeito inesperado.";
+    if (resposta.status === 403) return t.codigoErrado;
+    if (resposta.status === 503) return t.semMesa;
+    if (!resposta.ok) return t.respostaEstranha;
     return null;
   } catch {
-    return "Não foi possível alcançar a mesa. Confira a rede e o endereço.";
+    return t.semRede;
   }
 }
 
@@ -107,7 +112,7 @@ if (erro) {
     // O EventSource reconecta sozinho. Se o plugin foi desligado, o canal
     // responde 404 e ele desiste: o recado diz o que conferir.
     if (fonte.readyState === EventSource.CLOSED) {
-      avisar("O plugin OBS está desligado no Mestre, ou a mesa fechou.");
+      avisar(t.desligado);
     }
   };
 }

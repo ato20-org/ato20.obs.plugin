@@ -8,7 +8,12 @@
 // ATO20 (/kit/retratos, num iframe) que desenhe -- com o dado de quem jogou
 // caindo embaixo do retrato, como na TV.
 
+import { textosPara } from "./textos.js";
+
 const busca = new URLSearchParams(location.search);
+// O painel põe `idioma=en` no link quando o Mestre está em inglês.
+const t = textosPara(busca.get("idioma") === "en" ? "en" : "pt-BR");
+if (busca.get("idioma") === "en") document.documentElement.lang = "en";
 const codigo = (busca.get("code") ?? "").trim().toUpperCase();
 const personagem = busca.get("personagem") || null;
 // /plugin/{id}/retratos.html: o id vem do caminho, e não escrito aqui.
@@ -21,15 +26,15 @@ function avisar(texto) {
 }
 
 async function conferir() {
-  if (!codigo) return "Link incompleto. Copie o link do painel Transmissão, no Mestre.";
+  if (!codigo) return t.linkIncompleto;
   try {
     const resposta = await fetch(`/sala?codigo=${encodeURIComponent(codigo)}`);
-    if (resposta.status === 403) return "O código da mesa não confere.";
-    if (resposta.status === 503) return "O mestre ainda não abriu uma campanha.";
-    if (!resposta.ok) return "A mesa respondeu de um jeito inesperado.";
+    if (resposta.status === 403) return t.codigoErrado;
+    if (resposta.status === 503) return t.semMesa;
+    if (!resposta.ok) return t.respostaEstranha;
     return null;
   } catch {
-    return "Não foi possível alcançar a mesa. Confira a rede e o endereço.";
+    return t.semRede;
   }
 }
 
@@ -82,7 +87,7 @@ function receber(pacote) {
   }
 
   if (personagem && retratos.length === 0) {
-    avisar("Este personagem não tem Retrato na ficha, ou não está mais vinculado a um jogador.");
+    avisar(t.semRetrato);
   } else {
     avisar("");
   }
@@ -102,7 +107,7 @@ if (erro) {
   };
   fonte.onerror = () => {
     if (fonte.readyState === EventSource.CLOSED) {
-      avisar("O plugin OBS está desligado no Mestre, ou a mesa fechou.");
+      avisar(t.desligado);
     }
   };
 }
